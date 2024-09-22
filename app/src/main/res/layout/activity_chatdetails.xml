@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/al4"
+    tools:context=".Chatdetails">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="3dp"
+        android:layout_below="@id/toolbar"
+        android:layout_above="@id/linear"/>
+
+    <LinearLayout
+        android:id="@+id/linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+
+        <ImageView
+            android:id="@+id/pinButton"
+            android:layout_width="45dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="2dp"
+            android:src="@drawable/pin"
+            android:contentDescription="Attach File"
+            android:background="@drawable/bg_et_message"
+            android:padding="8dp" />
+
+        <EditText
+            android:id="@+id/Enter_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_et_message"
+            android:ems="10"
+            android:hint="Enter your Message"
+            android:inputType="text|textPersonName"
+            android:textColor="@color/black"
+            android:minHeight="48dp"
+            android:padding="10dp" />
+
+        <ImageView
+            android:id="@+id/send"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            app:srcCompat="@drawable/send"/>
+    </LinearLayout>
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/settingsIconColor"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/leftarrowwhite"/>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profileImage"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="7dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/back"
+                android:padding="5dp"
+                app:civ_border_color="#FF000000"
+                app:civ_border_width="2dp"
+                android:src="@drawable/avatar3"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/username"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:text="Username"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/profileImage"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageview4"
+                android:layout_marginEnd="15dp"
+                android:layout_marginRight="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/imageview5"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/call"
+                tools:ignore="RtlHardcoded" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageview5"
+                android:layout_marginEnd="15dp"
+                android:layout_marginRight="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/imageview6"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/videocall"
+                tools:ignore="RtlHardcoded" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageview6"
+                android:layout_marginEnd="15dp"
+                android:layout_marginRight="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/menu"
+                tools:ignore="RtlHardcoded" />
+
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.appcompat.widget.Toolbar>
+
+</RelativeLayout>

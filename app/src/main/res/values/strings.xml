@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Allo-Chat</string>
+    <string name="textview">TextView</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="sign_up">Sign up</string>
+    <string name="already_have_account">Already Have Account</string>
+    <string name="sign_up_with_phone">Sign up with phone</string>
+    <string name="facebook">Facebook</string>
+    <string name="click_to_sign_up">Click-To-Sign-Up</string>
+    <string name="sign_in">Sign-In</string>
+    <string name="settings">Settings</string>
+    <string name="gropu_chat">Gropu-Chat</string>
+    <string name="log_out">Log-Out</string>
+    <string name="group_chat">Group-Chat</string>
+    <string name="reset_password">reset_password</string>
+    <string name="back_to_sign_in">back to sign in</string>
+    <string name="forgot_password">forgot password</string>
+    <string name="web_client_ID">1059773092400-haoor0q91h76soquuugdkkka697ff9p4.apps.googleusercontent.com</string>
+    <string name="fb_login_protocol_scheme">fb3775936762688015</string>
+    <string name="facebook_app_id">3775936762688015</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

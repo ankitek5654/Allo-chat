@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1059773092400",
+    "firebase_url": "https://allo-chat-e7c83-default-rtdb.firebaseio.com",
+    "project_id": "allo-chat-e7c83",
+    "storage_bucket": "allo-chat-e7c83.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1059773092400:android:d81296b5e404aa3c8493f5",
+        "android_client_info": {
+          "package_name": "com.example.allo_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1059773092400-rmvlclm2s1u8sgq18ulml52ek2joeelr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.allo_chat",
+            "certificate_hash": "70b2b99e099a058426e88f00daf8cb1cfac42a86"
+          }
+        },
+        {
+          "client_id": "1059773092400-haoor0q91h76soquuugdkkka697ff9p4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkZF8Lt-CWF3lBFCg_j0Vt4ahs9JyPuh0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1059773092400-haoor0q91h76soquuugdkkka697ff9p4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
