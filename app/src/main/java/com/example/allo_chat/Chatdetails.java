@@ -3,7 +3,6 @@ package com.example.allo_chat;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -12,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.allo_chat.Adapters.Chatadapter;
 import com.example.allo_chat.databinding.ActivityChatdetailsBinding;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,7 +18,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -34,9 +31,9 @@ public class Chatdetails extends AppCompatActivity {
     FirebaseDatabase database;
     FirebaseAuth mAuth;
     FirebaseStorage storage;
-    final int PICK_FILE = 25;
-    String fileUrl = null;
-    String fileName = null;
+
+    final int PICK_FILE_REQUEST_CODE = 1;
+    String senderRoom, receiverRoom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +66,8 @@ public class Chatdetails extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         binding.recyclerview.setLayoutManager(layoutManager);
 
-        final String senderRoom = senderId + receiverId;
-        final String receiverRoom = receiverId + senderId;
+        senderRoom = senderId + receiverId;
+        receiverRoom = receiverId + senderId;
 
         database.getReference().child("chats").child(senderRoom).addValueEventListener(new ValueEventListener() {
             @Override
@@ -82,44 +79,32 @@ public class Chatdetails extends AppCompatActivity {
                     list.add(model);
                 }
                 chatadapter.notifyDataSetChanged();
-                binding.recyclerview.scrollToPosition(list.size() - 1); // Scroll to the last message
+                binding.recyclerview.scrollToPosition(list.size() - 1);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                // Handle error
             }
         });
 
         binding.send.setOnClickListener(view -> {
             String msg = binding.EnterMessage.getText().toString().trim();
 
-            if (msg.isEmpty() && fileUrl == null) {
-                Toast.makeText(Chatdetails.this, "Please enter a message or select a file", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            // Create a new message model
-            final MessageModel model;
-            if (fileUrl != null) {
-                model = new MessageModel(senderId, "File: " + fileName, fileUrl);
+            if (!msg.isEmpty()) {
+                final MessageModel model = new MessageModel(senderId, msg, null, null, null);
+                model.setTimestamp(new Date().getTime());
+                sendMessage(senderRoom, receiverRoom, model);
+                binding.EnterMessage.setText("");
             } else {
-                model = new MessageModel(senderId, msg, null);
+                Toast.makeText(Chatdetails.this, "Please enter a message", Toast.LENGTH_SHORT).show();
             }
-            model.setTimestamp(new Date().getTime());
-
-            // Send the message
-            sendMessage(senderRoom, receiverRoom, model);
-
-            // Clear input fields
-            binding.EnterMessage.setText("");
-            fileUrl = null;  // Reset the file URL after sending the message
-            fileName = null;  // Reset the file name
         });
 
         binding.pinButton.setOnClickListener(view -> {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("*/*");
-            startActivityForResult(Intent.createChooser(intent, "Select File"), PICK_FILE);
+            startActivityForResult(Intent.createChooser(intent, "Select File"), PICK_FILE_REQUEST_CODE);
         });
     }
 
@@ -127,34 +112,37 @@ public class Chatdetails extends AppCompatActivity {
         database.getReference().child("chats").child(senderRoom).push().setValue(model)
                 .addOnSuccessListener(unused -> {
                     database.getReference().child("chats").child(receiverRoom).push().setValue(model);
+                    Toast.makeText(Chatdetails.this, "Message sent", Toast.LENGTH_SHORT).show();
                 });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PICK_FILE && resultCode == RESULT_OK && data != null) {
+        if (requestCode == PICK_FILE_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             Uri selectedFileUri = data.getData();
-
-            if (selectedFileUri != null) {
-                uploadFile(selectedFileUri);
-            } else {
-                Toast.makeText(this, "File selection failed", Toast.LENGTH_SHORT).show();
-            }
+            uploadFile(selectedFileUri);
         }
     }
 
-    private void uploadFile(Uri selectedFileUri) {
-        final StorageReference reference = storage.getReference().child("chats/files")
-                .child(System.currentTimeMillis() + "_" + selectedFileUri.getLastPathSegment());
+    private void uploadFile(Uri fileUri) {
+        StorageReference storageRef = storage.getReference().child("files/" + System.currentTimeMillis() + "_" + fileUri.getLastPathSegment());
 
-        reference.putFile(selectedFileUri).addOnSuccessListener(taskSnapshot -> {
-            reference.getDownloadUrl().addOnSuccessListener(uri -> {
-                fileUrl = uri.toString(); // Set fileUrl to be used in the send button
-                fileName = selectedFileUri.getLastPathSegment(); // Get file name
-                Toast.makeText(Chatdetails.this, "File selected. Press send to upload", Toast.LENGTH_SHORT).show();
+        storageRef.putFile(fileUri).addOnSuccessListener(taskSnapshot -> {
+            storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                String fileUrl = uri.toString();
+                String fileName = fileUri.getLastPathSegment();
+
+                // Create a MessageModel with the file URL
+                MessageModel model = new MessageModel(mAuth.getUid(), null, null, fileUrl, fileName);
+                model.setTimestamp(new Date().getTime());
+
+                // Send the message with the file URL
+                sendMessage(senderRoom, receiverRoom, model);
+                Toast.makeText(Chatdetails.this, "File sent", Toast.LENGTH_SHORT).show();
             });
+        }).addOnFailureListener(e -> {
+            Toast.makeText(Chatdetails.this, "File upload failed", Toast.LENGTH_SHORT).show();
         });
     }
 }

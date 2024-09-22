@@ -9,6 +9,11 @@ public class MessageModel {
     private long timestamp;
     private String messageId; // New field for unique message identifier
 
+    public MessageModel(String uid, String message) {
+        this.uid = uid;
+        this.message = message;
+    }
+
     public MessageModel(String uid, String message, String fileUrl) {
         this.uid = uid;
         this.message = message;
